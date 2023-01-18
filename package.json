@@ -27,7 +27,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "express-list-endpoints": "^6.0.0",
-    "mongoose": "^6.1.7",
+    "mongoose": "^6.8.4",
     "node-cache": "^5.1.2",
     "node-fetch": "^2.6.5",
     "uuid": "^8.3.2",
