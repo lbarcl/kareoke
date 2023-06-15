@@ -60,8 +60,14 @@ class Spotify {
         return image.rawBody;
     }
 
-    async searchTrack(query: string): Promise<spotifyInterface.Track> {
+    async searchTrack(query: string): Promise<spotifyInterface.Track | null> {
         const response = await this.sendRequest(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=1`);
+
+        //@ts-ignore
+        if (response?.error != undefined) {  
+            return null;
+        }
+
         return response.tracks.items[0];
     }
 }

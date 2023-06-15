@@ -31,16 +31,23 @@ router.post("/", async (req, res) => {
 })
 
 router.get("/search", async (req, res) => {
-    const { q } = req.query;
+    const { query } = req.query;
     res.setHeader('Cache-Control', 'no-cache');
 
-    if (q == undefined) {
+    if (!query || query == '') { 
         res.status(400);
-        res.send("Missing query string");
+        res.send("No given search query");
         return;
     }
 
-    const track = await spotify.searchTrack(q.toString());
+    const track = await spotify.searchTrack(query.toString());
+
+    if (track == null) { 
+        res.status(404);
+        res.send("No search result found");
+        return;
+    }
+
     const song = await songs.get(track.id, 1);
 
     if (song == null) {

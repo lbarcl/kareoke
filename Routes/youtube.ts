@@ -78,3 +78,29 @@ router.get('/:id/convert', async (req, res) => {
         },
     })
 })
+
+router.get('/search', async (req, res) => { 
+    const { query } = req.query;
+
+    if (!query || query == '') { 
+        res.status(400);
+        res.send("No given search query");
+        return;
+    }
+
+    const video = await YouTube.searchOne(query.toString(), "video", false);
+
+    if (video == null) { 
+        res.status(404);
+        res.send("No search result found");
+        return;
+    }
+
+    res.send({
+        id: video.id,
+        title: video.title,
+        image: video.thumbnail?.url,
+        artist: video.channel?.name,
+        duration: video.duration
+    });
+})

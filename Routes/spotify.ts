@@ -74,3 +74,29 @@ Router.get('/:id/convert', async (req, res) => {
         }
     })
 })
+
+Router.get('/search', async (req, res) => { 
+    const { query } = req.query;
+
+    if (!query || query == '') { 
+        res.status(400);
+        res.send("No given search query");
+        return;
+    }
+
+    const track = await Spotify.searchTrack(query.toString());
+
+    if (track == null) { 
+        res.status(404);
+        res.send("No search result found");
+        return;
+    }
+
+    res.send({
+        id: track.id,
+        title: track.name,
+        iamge: track.album.images[0].url,
+        artist: track.artists[0].name,
+        duration: track.duration_ms
+    });
+})
